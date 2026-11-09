@@ -57,58 +57,43 @@ public:
 
         int m = matrix[0].size();
 
-        vector<vector<int>> res(n, vector<int>(m, 0));
-
-        for (int j = 0; j < m; j++) {
-            res[0][j] = matrix[0][j] - '0';
-        }
-
-        for (int i = 1; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (matrix[i][j] == '1') {
-                    res[i][j] = res[i - 1][j] + 1;
-                }
-            }
-        }
-
+        vector<int> height(m, 0);
         int ans = 0;
-
-        vector<vector<int>> LEFT(n, vector<int>(m));
-        vector<vector<int>> RIGHT(n, vector<int>(m));
 
         for (int i = 0; i < n; i++) {
 
+            for (int j = 0; j < m; j++) {
+                if (matrix[i][j] == '1')
+                    height[j]++;
+                else
+                    height[j] = 0;
+            }
+
             stack<int> st;
+            vector<int> left(m), right(m);
 
             for (int j = 0; j < m; j++) {
-                while (!st.empty() && res[i][st.top()] >= res[i][j]) {
+                while (!st.empty() && height[st.top()] >= height[j])
                     st.pop();
-                }
 
-                LEFT[i][j] = st.empty() ? -1 : st.top();
-
+                left[j] = st.empty() ? -1 : st.top();
                 st.push(j);
             }
 
             while (!st.empty()) st.pop();
 
             for (int j = m - 1; j >= 0; j--) {
-                while (!st.empty() && res[i][st.top()] >= res[i][j]) {
+                while (!st.empty() && height[st.top()] >= height[j])
                     st.pop();
-                }
 
-                RIGHT[i][j] = st.empty() ? m : st.top();
-
+                right[j] = st.empty() ? m : st.top();
                 st.push(j);
             }
-        }
 
-        for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
+                int width = right[j] - left[j] - 1;
 
-                int width = RIGHT[i][j] - LEFT[i][j] - 1;
-
-                int side = min(res[i][j], width);
+                int side = min(height[j], width);
 
                 ans = max(ans, side * side);
             }
