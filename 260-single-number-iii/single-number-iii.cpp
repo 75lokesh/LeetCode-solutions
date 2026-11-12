@@ -13,8 +13,8 @@ public:
         //     }        }
         // return ans;
         int n = nums.size();
-        long long temp = 0;
-        for(int i=0; i<n; i++){
+        long long temp = nums[0];
+        for(int i=1; i<n; i++){
             temp^=nums[i];
         }
         temp &= -temp;
