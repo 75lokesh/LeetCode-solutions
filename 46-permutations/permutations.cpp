@@ -1,27 +1,55 @@
+// class Solution {
+// public:
+// void permutations(vector<int> &nums, vector<bool>vis, int cnt , int n, vector<vector<int>>&res, vector<int> temp){
+//     if(cnt == n){
+//         res.push_back(temp);
+//         return;
+//     }
+//     for(int i=0; i<n; i++){
+//         if(!vis[i]){
+//             temp.push_back(nums[i]);
+//             vis[i]=1;
+//             permutations(nums,vis,cnt+1, n, res,temp);
+//             vis[i]=0;
+//             temp.pop_back();
+//         }
+//     }
+// }
+//     vector<vector<int>> permute(vector<int>& nums) {
+//         int n = nums.size();
+//         vector<vector<int>> res;
+//         vector<int> temp;
+//         vector<bool>vis(n,0);
+//         int cnt = 0;
+//         permutations(nums,vis,cnt,n,res,temp);
+//         return res;
+//     }
+// };
 class Solution {
 public:
-void permutations(vector<int> &nums, vector<bool>vis, int cnt , int n, vector<vector<int>>&res, vector<int> temp){
-    if(cnt == n){
+vector<vector<int>> res;
+vector<bool> vis;
+void solve(vector<int>&nums, vector<int> &temp){
+    if(temp.size()==nums.size()){
+
         res.push_back(temp);
-        return;
     }
-    for(int i=0; i<n; i++){
+    for(int i=0; i<nums.size(); i++){
         if(!vis[i]){
             temp.push_back(nums[i]);
             vis[i]=1;
-            permutations(nums,vis,cnt+1, n, res,temp);
-            vis[i]=0;
+            solve(nums,temp);
             temp.pop_back();
+            vis[i]=0;
         }
     }
+    return;
 }
     vector<vector<int>> permute(vector<int>& nums) {
         int n = nums.size();
-        vector<vector<int>> res;
+        vis.resize(n,0);
         vector<int> temp;
-        vector<bool>vis(n,0);
-        int cnt = 0;
-        permutations(nums,vis,cnt,n,res,temp);
+        solve(nums, temp);
         return res;
     }
 };
