@@ -1,28 +1,27 @@
 class Solution {
 public:
-vector<vector<int>> res;
-vector<bool> vis;
-void solve(vector<int>&nums, vector<int> &temp){
-    if(temp.size()==nums.size()){
-
+void permutations(vector<int> &nums, vector<bool>vis, int cnt , int n, vector<vector<int>>&res, vector<int> temp){
+    if(cnt == n){
         res.push_back(temp);
+        return;
     }
-    for(int i=0; i<nums.size(); i++){
+    for(int i=0; i<n; i++){
         if(!vis[i]){
             temp.push_back(nums[i]);
             vis[i]=1;
-            solve(nums,temp);
-            temp.pop_back();
+            permutations(nums,vis,cnt+1, n, res,temp);
             vis[i]=0;
+            temp.pop_back();
         }
     }
-    return;
 }
     vector<vector<int>> permute(vector<int>& nums) {
         int n = nums.size();
-        vis.resize(n,0);
+        vector<vector<int>> res;
         vector<int> temp;
-        solve(nums, temp);
+        vector<bool>vis(n,0);
+        int cnt = 0;
+        permutations(nums,vis,cnt,n,res,temp);
         return res;
     }
 };
